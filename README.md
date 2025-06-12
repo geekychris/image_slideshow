@@ -48,7 +48,46 @@ Parameters:
 
 ## Auto-start on Raspberry Pi
 
-To make the slideshow start automatically on your Raspberry Pi:
+There are two ways to make the slideshow start automatically on your Raspberry Pi:
+
+### Method 1: Using systemd (Recommended)
+
+1. Create a systemd service file:
+```bash
+sudo nano /etc/systemd/system/slideshow.service
+```
+
+2. Add the following content (adjust paths and user as needed):
+```ini
+[Unit]
+Description=Full Screen Slideshow
+After=graphical.target
+
+[Service]
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/pi/.Xauthority
+ExecStart=/usr/bin/python3 /home/pi/pi_slideshow.py /path/to/images 10
+Restart=always
+User=pi
+Group=pi
+
+[Install]
+WantedBy=graphical.target
+```
+
+3. Enable and start the service:
+```bash
+sudo systemctl enable slideshow.service
+sudo systemctl start slideshow.service
+```
+
+4. To check status or stop the service:
+```bash
+sudo systemctl status slideshow.service  # Check status
+sudo systemctl stop slideshow.service    # Stop the service
+```
+
+### Method 2: Using Desktop Autostart
 
 1. Create an autostart entry:
 ```bash
@@ -66,6 +105,13 @@ EOL
 ```bash
 chmod +x /path/to/pi_slideshow.py
 ```
+
+### Notes about Auto-start
+- Method 1 (systemd) is more reliable and provides better error logging
+- Method 1 will restart the slideshow if it crashes
+- Method 2 only works when the desktop environment is running
+- For both methods, replace `/path/to/pi_slideshow.py` and `/path/to/images` with your actual paths
+- The default user on Raspberry Pi OS is 'pi' - adjust the paths and user in the configuration if you use a different username
 
 ## Notes
 
