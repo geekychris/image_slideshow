@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.png" alt="Image Slideshow logo" width="180">
+</p>
+
 # Pi Full Screen Slideshow
 
 A Python script for displaying a full-screen slideshow of images on both macOS and Raspberry Pi systems.
